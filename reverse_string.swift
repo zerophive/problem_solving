@@ -22,7 +22,7 @@ func myReverseString(_ string: String) -> String {
 }
 
 if CommandLine.argc > 1 {
-	let string = myReverseString(CommandLine.arguments[1])
+    let string = myReverseString(CommandLine.arguments[1])
     print(string)
 } else {
     print("No string to reverse has been entered!")
