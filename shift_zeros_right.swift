@@ -4,6 +4,7 @@ import Darwin
 
 /*
 given an array, shift all zeros to the right side
+saw this discussed on some random YouTube video
 */
 
 
