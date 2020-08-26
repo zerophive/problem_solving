@@ -112,7 +112,7 @@ print(array3)
 This is a one pass solution that is correct
 after thinking about it I was on the right idea, but needed to
 rethink how I went about scanning the array and how I used marker
-indices
+indices and removed a huge amount of unneeded code
 */
 func shiftZerosRight(_ array: inout [Int]) {
 	let maxIndex = array.count - 1
