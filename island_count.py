@@ -8,6 +8,13 @@
 # but really there are flaws and inefficienceies in this. O(n) is probably n^2 and
 # and size complexity, yuk!
 
+# 20200828 - I finally came across this on leetcode and wow, my previous solution
+# was awful, it really only worked for the narrow examples I tried. It fails completely
+# when other grids are used. It attempted to use too much, had way too much code
+# and did not work, I read a few solutions and scratched my head and finally I figured
+# it out. First I am an idiot, second, less is more, just need to think before I write
+# I deleted 67 lines are garbage, the correct solution is 39 line, FML
+
 sea = [
     [0,0,0,0,0],
     [1,1,0,0,0],
@@ -16,68 +23,34 @@ sea = [
 ]
 
 def num_of_island(grid):
-    total_islands = 0
-    islands = []
+    def search(row,col):
+        if row < 0 or row >= len(grid): return
+        if col < 0 or col >= len(grid[0]): return
 
-    col_len = len(grid)
-    row_len = len(grid[0])
-    
+        if grid[row][col] == 0: return
+
+        island.append((row, col))
+        grid[row][col] = 0
+
+        search(row + 1, col)
+        search(row, col + 1)
+        search(row - 1, col)
+        search(row, col - 1)
 
 
-    def check_below(element, island):
-        lower_neighbour = element[0] + 1
-        if lower_neighbour > col_len - 1: return island
-        if grid[lower_neighbour][element[1]] == 1:
-            island = add_island((lower_neighbour, element[1]), island)
-            island = check_left(island[-1], island)
-            island = check_right(island[-1], island)
-            return check_below(island[-1], island)
-        else:
-            return island
+    islands = 0
+    theIslands = []
 
-    def check_right(element, island):
-        right_neighbour = element[1] + 1
-        if right_neighbour > row_len - 1: return island
-        if sea[element[0]][right_neighbour] == 1:
-            island = add_island((element[0], right_neighbour), island)
-            island =  check_below(island[-1], island)
-            return check_right(island[-1], island)
-        else:
-            return island
-            
-    def check_left(element, island):
-        left_neighbour = element[1] - 1
-        if left_neighbour < 0: return island
-        if sea[element[0]][left_neighbour] == 1:
-            island = add_island((element[0], left_neighbour), island)
-            island = check_below(island[-1], island)
-            return check_left(island[-1], island)
-        else:
-            return island
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            island = []
+            if grid[row][col] == 1:
+                islands += 1
+                search(row, col)
 
-    def add_island(element, island):
-        if not element in island:
-            island.append(element)
-            sea[element[0]][element[1]] = 0
-            #print(sea)
-        
-        return island
+            if island: theIslands.append(island)
 
-    row_count = 0
-    for row in grid:
-        island = []
-        if row.count(1) == 0:
-            row_count += 1
-            continue
-        for element in range(col_len):
-            if grid[row_count][element] == 1:
-               island = add_island((row_count,element), island)
-               island = check_below((row_count,element), island)
-               island = check_right((row_count,element), island)
-        row_count += 1
-        islands.append(island)
-    
-    return len(islands), islands
+    return (islands, theIslands)
 
 num_of_islands, islands = num_of_island(sea)
 print("Number of islands: " + str(num_of_islands))
